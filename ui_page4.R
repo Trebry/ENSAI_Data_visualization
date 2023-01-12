@@ -1,29 +1,32 @@
+routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
 tabPanel("Visualization", 
          
          # Sidebar with a slider input for number of bins 
          sidebarLayout(
            sidebarPanel(
-             sliderInput("bins",
-                         "Number of bins:",
-                         min = 1,
-                         max = 50,
-                         value = 30),
+             selectInput(inputId="fromLocation",label="Select a departure station",
+                         choices=routeinfo %>% select(`Gare origine`)%>%
+                           arrange(`Gare origine`)
+             ),
+             selectInput(inputId="toLocation",label="Select a destination location",
+                         choices=routeinfo %>% select(`Destination`)%>%
+                           arrange(`Gare origine`)
+             ),
              
              # input for the color
-             colourInput(inputId = "color", label = "Color :", value = "purple"),
+             #colourInput(inputId = "color", label = "Color :", value = "purple"),
              
              # title of the graph
-             textInput(inputId = "titre", label = "Title :", value = "Histogram"),
+             #textInput(inputId = "titre", label = "Title :", value = "Histogram"),
              
              # selection of the variable
-             radioButtons(inputId = "var", label = "Variable : ", choices = colnames(faithful))
+             radioButtons(inputId = "class", label = "Class : ", choices = c("1","2","Both"),selected="Both")
            ),
            
            # Show a plot of the generated distribution
            mainPanel(
-             plotOutput("distPlot"),
+             dataTableOutput("priceTable"),
              # classes (div centrée)
-             div(textOutput("n_bins"), align = "center")
            )
          )
 )

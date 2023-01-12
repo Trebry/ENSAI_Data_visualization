@@ -1,15 +1,8 @@
-output$distPlot <- renderPlot({
-  
-  # generate bins based on input$bins from ui.R
-  x    <- faithful[, input$var] 
-  bins <- seq(min(x), max(x), length.out = input$bins + 1)
-  
-  # draw the histogram with the specified number of bins
-  hist(x, breaks = bins, col = input$color, border = 'white', main = input$titre)
+routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
+output$priceTable <- renderDataTable({
+  routeinfo %>% filter(`Gare origine`==input$fromLocation) %>% 
+    filter(`Destination`==input$toLocation)%>%
+    filter(`Classe`=="1")
   
 })
 
-# number of bins
-output$n_bins <- renderText({
-  paste("Number of bins: ", input$bins)
-})
