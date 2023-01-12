@@ -8,6 +8,7 @@ library(sf)
 library(ggmap)
 library(tidyverse)
 library(geojsonR)
+library(tidytransit)
 
 shinyUI(
   navbarPage(theme = shinytheme("flatly"), collapsible = TRUE,

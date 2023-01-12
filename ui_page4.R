@@ -5,12 +5,10 @@ tabPanel("Visualization",
          sidebarLayout(
            sidebarPanel(
              selectInput(inputId="fromLocation",label="Select a departure station",
-                         choices=routeinfo %>% select(`Gare origine`)%>%
-                           arrange(`Gare origine`)
+                         choices=routeinfo %>% select(`Gare origine`)
              ),
              selectInput(inputId="toLocation",label="Select a destination location",
-                         choices=routeinfo %>% select(`Destination`)%>%
-                           arrange(`Gare origine`)
+                         choices=routeinfo %>% select(`Destination`)
              ),
              
              # input for the color
