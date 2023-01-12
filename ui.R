@@ -4,10 +4,14 @@ library(shinydashboard)
 library(shinythemes)
 library(colourpicker)
 library(leaflet)
+library(sf)
+library(ggmap)
+library(tidyverse)
+library(geojsonR)
 
 shinyUI(
   navbarPage(theme = shinytheme("flatly"), collapsible = TRUE,
-             HTML('<a style="text-decoration:none;cursor:default;color:#FFFFFF;" class="active" href="#">Second app</a>'),
+             HTML('<a style="text-decoration:none;cursor:default;color:#FFFFFF;" class="active" href="#">Magnificent app</a>'),
              id="nav",
              
              # Home page

@@ -1,5 +1,7 @@
 library(shiny)
 
+stations_raw <- read_delim("mess/referentiel-gares-voyageurs.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
