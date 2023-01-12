@@ -1,17 +1,21 @@
 # Home page
 tabPanel("About this site",
          tags$div(
-           tags$h4("Last update"), 
-           "This site is updated once daily. There are several other excellent COVID mapping tools available, including those run by", 
-           tags$a(href="https://experience.arcgis.com/experience/685d0ace521648f8a5beeeee1b9125cd", "the WHO,"),
-           tags$a(href="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6", "Johns Hopkins University,"),"and",
-           tags$a(href="https://ourworldindata.org/coronavirus-data-explorer?zoomToSelection=true&time=2020-03-01..latest&country=IND~USA~GBR~CAN~DEU~FRA&region=World&casesMetric=true&interval=smoothed&perCapita=true&smoothing=7&pickerMetric=total_cases&pickerSort=desc", "Our World in Data."),
-           "Our aim is to complement these resources with several interactive features, including the timeline function and the ability to overlay past outbreaks.",
+           tags$h4("About"), 
+           "This application was developped by Otis Cooper Stein Dijkstra during their master's for Smart Data Science at ENSAI for the course of Data Visualization", 
+
+           tags$br(),
+           tags$br(),
            
-           tags$br(),tags$br(),tags$h4("Background"), 
-           "In December 2019, cases of severe respiratory illness began to be reported across the city of Wuhan in China. 
-                        These were caused by a new type of coronavirus, and the disease is now commonly referred to as COVID-19.
-                        The number of COVID-19 cases started to escalate more quickly in mid-January and the virus soon spread beyond China's borders. 
-                        This story has been rapidly evolving ever since, and each day we are faced by worrying headlines regarding the current state of the outbreak.",
+           tags$h4("Code"), 
+           "The code is available on ",
+           tags$a(href="https://github.com/Trebry/ENSAI_Data_visualization", "github"),
+           
+           tags$br(),
+           tags$br(),
+           
+           tags$h4("Data"), 
+           "All the data we used is avaiable on the ",
+           tags$a(href="https://ressources.data.sncf.com/pages/accueil/", "SNCF website")
          )
 )
