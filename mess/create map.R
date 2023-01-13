@@ -16,6 +16,7 @@ map <- leaflet(data=rails) |>addTiles() |> addPolylines(color="red",weight=3,fil
   addCircleMarkers(stations_raw$Longitude, stations_raw$Latitude,radius=1,color="black")
 map
 
-rates <- read_delim("tarifs-tgv-inoui-ouigo.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
-rates
-rates %>% select(where("Classe" == 1) )
+rates <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+x<- rates %>% filter(`Gare origine`=="RENNES") %>% 
+  filter(`Classe`=="1") %>% pull(`Prix maximum`)
+rates %>% pull(`Gare origine`) 
