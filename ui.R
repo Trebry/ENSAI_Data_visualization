@@ -10,6 +10,12 @@ library(tidyverse)
 library(geojsonR)
 library(tidytransit)
 
+stations_raw <- read_delim("mess/referentiel-gares-voyageurs.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+horaires_gare<- read_delim("mess/horaires-des-gares1.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
+gtfs <- read_gtfs("https://eu.ftp.opendatasoft.com/sncf/gtfs/export_gtfs_voyages.zip")
+
+
 shinyUI(
   navbarPage(theme = shinytheme("flatly"), collapsible = TRUE,
              HTML('<a style="text-decoration:none;cursor:default;color:#FFFFFF;" class="active" href="#">Magnificent app</a>'),
@@ -18,16 +24,16 @@ shinyUI(
              # Home page
              source(file = "ui_page1.R", local = T)$value,
              
-             # First map
+             # Stations in France
              source(file = "ui_page2.R", local = T)$value,
              
-             # First graph
+             # Departures
              source(file = "ui_page3.R", local = T)$value,
              
-             # Second graph
+             # Find your train
              source(file = "ui_page4.R", local = T)$value,
              
-             #About
+             # About this site
              source(file = "ui_page5.R", local = T)$value
   )
 )

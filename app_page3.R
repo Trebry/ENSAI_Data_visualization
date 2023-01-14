@@ -1,7 +1,7 @@
-# table
+# Departures
 
+# Tables used for the tab : Departures
 gtfs <- read_gtfs("https://eu.ftp.opendatasoft.com/sncf/gtfs/export_gtfs_voyages.zip")
-
 
 stop_ids <- gtfs$stops %>% select(stop_id,stop_name) 
 departures <- stop_ids %>% 

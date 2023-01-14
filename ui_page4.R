@@ -1,3 +1,4 @@
+# Find your train
 routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
 tabPanel("Visualization", 
          
@@ -5,20 +6,14 @@ tabPanel("Visualization",
          sidebarLayout(
            sidebarPanel(
              selectInput(inputId="fromLocation",label="Select a departure station",
-                         choices=routeinfo %>% select(`Gare origine`)
+                         choices=routeinfo %>% select(`Gare origine`) %>% arrange(`Gare origine`)
              ),
              selectInput(inputId="toLocation",label="Select a destination location",
-                         choices=routeinfo %>% select(`Destination`)
+                         choices=routeinfo %>% select(`Destination`) %>% arrange(`Destination`)
              ),
              
-             # input for the color
-             #colourInput(inputId = "color", label = "Color :", value = "purple"),
-             
-             # title of the graph
-             #textInput(inputId = "titre", label = "Title :", value = "Histogram"),
-             
              # selection of the variable
-             radioButtons(inputId = "class", label = "Class : ", choices = c("1","2","Both"),selected="Both")
+             radioButtons(inputId = "class", label = "Class : ", choices = c("1","2"),selected="1")
            ),
            
            # Show a plot of the generated distribution
