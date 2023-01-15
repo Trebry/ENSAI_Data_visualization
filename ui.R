@@ -25,7 +25,7 @@ horaires_gare<- read_delim("mess/horaires-des-gares1.csv",delim = ";", escape_do
 
 shinyUI(
   navbarPage(theme = shinytheme("flatly"), collapsible = TRUE,
-             HTML('<a style="text-decoration:none;cursor:default;color:#FFFFFF;" class="active" href="#">Magnificent app</a>'),
+             HTML('<a style="text-decoration:none;cursor:default;color:#FFFFFF;" class="active" href="#">Railroad Aid</a>'),
              id="nav",
              
              # Home page
