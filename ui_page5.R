@@ -9,9 +9,9 @@ tabPanel("Lost items",
            ),
          mainPanel(
             tabsetPanel(
-              tabPanel("Most recent items lost", dataTableOutput("lostTable")),
-              tabPanel("Most commun items lost (pie chart)", plotOutput("PiePlot")),
-              tabPanel("Most commun items lost (bar chart)", plotOutput("DistPlot"))
+              tabPanel("Most common items lost (bar chart)", plotOutput("DistPlot")),
+              tabPanel("Most common items lost (pie chart)", plotOutput("PiePlot")),
+              tabPanel("Details on lost items", dataTableOutput("lostTable"))
             )
          )
     )
