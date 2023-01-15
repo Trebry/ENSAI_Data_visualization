@@ -18,7 +18,7 @@ div.outer {
   padding: 0 10px 10px 10px;
   cursor: move;
   /* Fade out while not hovering */
-  opacity: 0.8;
+  opacity: 0.9;
   zoom: 0.9;
   transition: opacity 500ms 1s;
 }

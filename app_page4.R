@@ -1,3 +1,4 @@
+# Find your train
 routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
 output$priceTable <- renderDataTable({
   routeinfo %>% filter(`Gare origine`==input$fromLocation) %>% 
