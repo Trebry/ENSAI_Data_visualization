@@ -36,3 +36,5 @@ output$table <- renderDataTable({
     arrange(date,arrival_time)
 })
 
+output$subtitle<- renderText({ paste("Departures from",input$location,"on date:",Sys.Date(),"\n") })
+
