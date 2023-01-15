@@ -68,7 +68,7 @@ horaires_gare<- read_delim("data/horaires-des-gares1.csv",delim = ";", escape_do
 ```
 
 ### Find a station
-This tab shows all the different stations in France> Stations offering all the different services offered by SNCF are indicated by green arrows, smaller stations are indicated by orange arrows, and the smallest stations are indicated by red arrows.
+This tab shows all the different stations in France. Stations offering all the different services offered by SNCF are indicated by green arrows, smaller stations are indicated by orange arrows, and the smallest stations are indicated by red arrows.
 
 When you click on a station you can see the name of the station and also it's opening hours is available.
 
@@ -133,7 +133,7 @@ stations_raw <- stations_raw %>%
 
 This tab shows all the departures from a selected station. You can also search the various routes leaving the station using the search bar on the right.
 
-Example of data shown for a depture from Rennes :
+Example of data shown for a departure from Rennes :
 
 ```{r Show departures, echo=FALSE, message=FALSE, warning=FALSE}
 stop_ids <- gtfs$stops %>% select(stop_id,stop_name) 
@@ -173,7 +173,7 @@ departures <- departures %>%
 
 This tab allows you to select a departure station, the class, the minimum and maximum price. When this three criteria have been chosen, the app will display a histogram of the train ticket prices and also a table of the various ticket prices.
 
-An example of data shown for a depture from rennes, in class 1 at minimum price : 
+An example of data shown for a departure from Rennes, in class 1 at minimum price : 
 
 ```{r Show prices, echo=FALSE, message=FALSE, warning=FALSE}
 
