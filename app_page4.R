@@ -17,7 +17,7 @@ output$distPlot <- renderPlot({
   # draw the histogram with the specified number of bins
   hist(x, breaks = bins, col = input$color, border = 'white',
        xlab = '',
-       main = input$title)
+       main = paste("Histogram of",input$price," ticket prices from ",input$fromLocation," in class",input$class))
   
 })
 
