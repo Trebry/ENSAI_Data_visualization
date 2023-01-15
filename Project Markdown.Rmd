@@ -10,31 +10,27 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Goal
-
-We have issues with the current landscape of rail planning apps
-this is a first stage prototype within the scope of France
-Choice of what to visualize
--choice to show stations
--departures
--prices
--Items
-We believe that the project is feasible and can have benefits over current apps but more features need to be added.
-
+A common struggle as a student is trying to find and plan train trips. In order to help us with this task, we developed this dashboard. This dashboard is a first prototype to show what could be possible, but more features need to be added to make it a full alternative to the SNCF website. Our final goal would be to have a website that has all the information for the european train services on one way page, but this prototype is limited in scope to the French rail network.
 
 ## Key features
-
--Search your nearest station
--Updated Departures at each reload
--Full screen map
--Interactivity in plots and titles
+The different pages related to the dashboard will be explained at the bottom of the page but some notable features of our dashboard is:
+  * Interactive search to find the closest station near you
+  
+  * Update data at each reload, in particular information on Departures time
+  
+  * Full screen map (not just a minipage)
+  
+  * Automatic updating of graphtitles and subtitles
 
 ## Potential new features
+In a future dashboard we would like to add the following features:
 
-Use map to access departures and prices related to that station
-Scheduling -> try to find route between locations with travelling time
+  * Add in the possibility to schedule and visualize a trip
+  
+  * Add the possibility to use the map to select a station for the pages on price and departures
 
 ## Known bugs
-For some addresses, such as "0" pages is known to crash
+For some addresses, such as "0" the find a station page is known to crash
 
 ## Online application
 
