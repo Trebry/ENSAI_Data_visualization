@@ -1,5 +1,5 @@
 # Lost and found
-tabPanel("Lost and found",
+tabPanel("Lost items",
          sidebarLayout(
            sidebarPanel(
              # selection of the variable

@@ -1,6 +1,6 @@
 # Stations in France
 
-tabPanel("Stations in France",
+tabPanel("Find a station",
          div(class="outer",
              # Use custom class so the map is full page
              tags$head(includeCSS("styles.css")),

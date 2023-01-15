@@ -5,7 +5,7 @@ backgroundImageCSS <- "height: 91vh;
                         background-image: url('%s');
                         "
 tabPanel(
-  "Welcome",
+  "Home",
   verbatimTextOutput("text1"),
   fluid = TRUE,
   style = sprintf(backgroundImageCSS,  "sncf.jpeg"),

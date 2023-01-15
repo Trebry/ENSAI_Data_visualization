@@ -1,6 +1,6 @@
 # Find your train
 routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
-tabPanel("Visualization", 
+tabPanel("Prices", 
          
          # Sidebar with a slider input for number of bins 
          sidebarLayout(
