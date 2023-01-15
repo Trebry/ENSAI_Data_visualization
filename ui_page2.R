@@ -13,7 +13,7 @@ tabPanel("Find a station",
                            span(HTML("<b> Find the closest station to you </b> <br> <br>"),align = "left", style = "font-size:100%"),
                            textInput("adresse", "Fill in your adresse", "Rennes"),
                            actionButton("Getadresse", "Find me !"),
-                           # Show coordinates of found adresse
+                           # Show coordinates of found address
                            #verbatimTextOutput("adresselng"),
                            #verbatimTextOutput("adresselat"),
                            verbatimTextOutput("station")

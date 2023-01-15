@@ -67,8 +67,8 @@ lost_found <- read_delim("https://ressources.data.sncf.com/api/v2/catalog/datase
 gtfs <- read_gtfs("https://eu.ftp.opendatasoft.com/sncf/gtfs/export_gtfs_voyages.zip")
 
 # Loading data that shouldn't change
-stations_raw <- read_delim("mess/referentiel-gares-voyageurs.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
-horaires_gare<- read_delim("mess/horaires-des-gares1.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+stations_raw <- read_delim("data/referentiel-gares-voyageurs.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+horaires_gare<- read_delim("data/horaires-des-gares1.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
 ```
 
 ### Find a station

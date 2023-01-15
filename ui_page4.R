@@ -1,12 +1,11 @@
 # Find your train
-routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
 tabPanel("Prices", 
          
          # Sidebar with a slider input for number of bins 
          sidebarLayout(
            sidebarPanel(
              selectInput(inputId="fromLocation",label="Select a departure station",
-                         choices=routeinfo %>% pull(`Gare origine`),selected=NULL
+                         choices=routeinfo %>% pull(`origine`),selected=NULL
              ),
              
              # selection of the variable

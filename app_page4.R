@@ -1,16 +1,15 @@
 # Find your train
-routeinfo <- read_delim("./mess/tarifs-tgv-inoui-ouigo.csv",delim=";")
 output$priceTable <- renderDataTable({
-  routeinfo %>% filter(`Gare origine`==input$fromLocation) %>% 
-    filter(`Classe`==input$class)
+  routeinfo %>% filter(`origine`==input$fromLocation) %>% 
+    filter(`classe`==input$class)
   
 })
 
 output$distPlot <- renderPlot({
   
   # generate bins based on input$bins from ui.R
-  x    <-   routeinfo %>% filter(`Gare origine`== (if (input$fromLocation=="") "RENNES" else input$fromLocation)) %>% 
-    filter(`Classe`==input$class) %>% pull( (if (input$price=="minimum") `Prix minimum` else `Prix maximum`))
+  x    <-   routeinfo %>% filter(`origine`== (if (input$fromLocation=="") "RENNES" else input$fromLocation)) %>% 
+    filter(`classe`==input$class) %>% pull( (if (input$price=="minimum") `prix_min` else `prix_max`))
   
   bins <- seq(min(x), max(x), length.out = input$bins + 1)
   
