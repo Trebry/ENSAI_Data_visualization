@@ -1,0 +1,234 @@
+---
+title: "Dynamic data visualization with R project"
+author: "Otis Cooper and Stein Dijkstra"
+date: "2023-01-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Goal
+
+We have issues with the current landscape of rail planning apps
+this is a first stage prototype within the scope of France
+Choice of what to visualize
+-choice to show stations
+-departures
+-prices
+-Items
+We believe that the project is feasible and can have benefits over current apps but more features need to be added.
+
+
+## Key features
+
+-Search your nearest station
+-Updated Departures at each reload
+-Full screen map
+-Interactivity in plots and titles
+
+## Potential new features
+
+Use map to access departures and prices related to that station
+Scheduling -> try to find route between locations with travelling time
+
+## Known bugs
+For some addresses, such as "0" pages is known to crash
+
+## Online application
+
+The application can be found at : 
+https://stein-dijkstra.shinyapps.io/RailroadAid_Otis_Stein/
+
+The code can be found at : 
+https://github.com/Trebry/ENSAI_Data_visualization
+
+## Documentation
+
+```{r Load packages, message=FALSE, warning=FALSE, include=FALSE}
+library(shiny)
+library(shinyWidgets)
+library(shinydashboard)
+library(shinythemes)
+library(colourpicker)
+library(leaflet)
+library(sf)
+library(ggmap)
+library(tidyverse)
+library(geojsonR)
+library(tidytransit)
+```
+
+```{r Load data, message=FALSE, warning=FALSE, include=FALSE}
+# Download data using API
+routeinfo <- read_delim("https://ressources.data.sncf.com/api/v2/catalog/datasets/tarifs-tgv-inoui-ouigo/exports/csv?limit=-1&offset=0&timezone=UTC",delim=";")
+lost_found <- read_delim("https://ressources.data.sncf.com/api/v2/catalog/datasets/objets-trouves-restitution/exports/csv?order_by%3Ddate%20asc&limit=100&offset=0&timezone=UTC",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+gtfs <- read_gtfs("https://eu.ftp.opendatasoft.com/sncf/gtfs/export_gtfs_voyages.zip")
+
+# Loading data that shouldn't change
+stations_raw <- read_delim("mess/referentiel-gares-voyageurs.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+horaires_gare<- read_delim("mess/horaires-des-gares1.csv",delim = ";", escape_double = FALSE, trim_ws = TRUE)
+```
+
+### Find a station
+This tab shows all the different stations in France> Stations offering all the different services offered by SNCF are indicated by green arrows, smaller stations are indicated by orange arrows, and the smallest stations are indicated by red arrows.
+
+When you click on a station you can see the name of the station and also it's opening hours is available.
+
+In the shinny app you can also search for an address, and the app will pinpoint you to the closet station.
+
+```{r Load map, echo=FALSE, message=FALSE, warning=FALSE}
+# Tables used for the tab : Stations in France
+horaires_gare <- horaires_gare %>%
+  pivot_wider(names_from = 'Jour de la semaine', values_from = 'Horaire en jour normal', values_fn = list)
+horaires_gare <- replace_na(horaires_gare, replace=list(rep("Not available", ncol(horaires_gare))))
+
+stations_raw <- stations_raw %>% 
+  left_join(horaires_gare,
+            by = c('Code UIC'='UIC')) 
+
+# Create map showing the various stations in France
+  leaflet(data=stations_raw) %>%
+    setView(lng = 2.2137, lat = 46.2276, zoom = 6) |>  addTiles() |> 
+    addAwesomeMarkers(data = stations_raw[stations_raw$`Niveau de service` == '3',], 
+                     ~Longitude, ~Latitude, icon = awesomeIcons(
+                       icon = 'info-sign',
+                       markerColor = 'green'
+                     ), 
+                     clusterOptions = markerClusterOptions(),
+                     popup=~paste("<b>",`Intitulé plateforme`,
+                                  `Code postal`,
+                                  "<br>Horiaires d'ouverture : </b>",
+                                  "<br>Monday ;", `Lundi`,
+                                  "<br>Tuesday :", `Mardi`, 
+                                  "<br>Wednesday :", `Mercredi`, 
+                                  "<br>Thursday :", `Jeudi`, 
+                                  "<br>Friday :", `Vendredi`, 
+                                  "<br>Saturday :", `Samedi`,
+                                  "<br>Sunday :", `Dimanche`)) |> 
+    addAwesomeMarkers(data = stations_raw[stations_raw$`Niveau de service` == '2',], 
+                   ~Longitude, ~Latitude, icon = awesomeIcons(
+                     icon = 'info-sign',
+                     markerColor = 'orange'
+                   ), 
+                   clusterOptions = markerClusterOptions(),
+                   popup=~paste("<b>",`Intitulé plateforme`,
+                                `Code postal`,
+                                "<br>Horiaires d'ouverture : </b>",
+                                "<br>Monday ;", `Lundi`,
+                                "<br>Tuesday :", `Mardi`, 
+                                "<br>Wednesday :", `Mercredi`, 
+                                "<br>Thursday :", `Jeudi`, 
+                                "<br>Friday :", `Vendredi`, 
+                                "<br>Saturday :", `Samedi`,
+                                "<br>Sunday :", `Dimanche`)) |> 
+    addAwesomeMarkers(data = stations_raw[stations_raw$`Niveau de service` == '1',], 
+                   ~Longitude, ~Latitude, icon = awesomeIcons(
+                     icon = 'info-sign',
+                     markerColor = 'red'
+                   ),  
+                   clusterOptions = markerClusterOptions(),
+                   popup=~paste("<b>",`Intitulé plateforme`,
+                                `Code postal`,"</b>"))
+```
+
+### Departures
+
+This tab shows all the departures from a selected station. You can also search the various routes leaving the station using the search bar on the right.
+
+Example of data shown for a depture from Rennes :
+
+```{r Show departures, echo=FALSE, message=FALSE, warning=FALSE}
+stop_ids <- gtfs$stops %>% select(stop_id,stop_name) 
+departures <- stop_ids %>% 
+  inner_join(gtfs$stop_times %>% 
+               select(trip_id, arrival_time, 
+                      departure_time, stop_id), 
+             by = "stop_id")
+
+departures <- departures %>% 
+  left_join(gtfs$trips %>% 
+              select(trip_id, route_id, 
+                     service_id, trip_headsign), 
+            by = "trip_id") 
+departures <- departures %>% 
+  left_join(gtfs$routes %>% 
+              select(route_id, 
+                     route_long_name,route_desc), 
+            by = "route_id")
+departures <- departures %>% 
+  left_join(gtfs$calendar_date %>% 
+              select(service_id, 
+                     date), 
+            by = "service_id")
+
+  departures %>% filter(stop_name == "Rennes") %>% 
+    select(stop_name,date,
+           arrival_time,
+           departure_time,
+           trip_headsign,
+           route_long_name) %>%
+    arrange(date,arrival_time)
+
+```
+
+### Prices
+
+This tab allows you to select a departure station, the class, the minimum and maximum price. When this three criteria have been chosen, the app will display a histogram of the train ticket prices and also a table of the various ticket prices.
+
+An example of data shown for a depture from rennes, in class 1 at minimum price : 
+
+```{r Show prices, echo=FALSE, message=FALSE, warning=FALSE}
+
+fromLocation = "RENNES"
+class = "1"
+price = "minimum"
+bins = 30
+
+  x    <-   routeinfo %>% filter(`origine`== (if (fromLocation=="") "RENNES" else fromLocation)) %>% 
+    filter(`classe`==class) %>% pull( (if (price=="minimum") `prix_min` else `prix_max`))
+  
+  bins <- seq(min(x), max(x), length.out = bins + 1)
+  
+  # draw the histogram with the specified number of bins
+  hist(x, breaks = bins, border = 'white',
+       xlab = '',
+       main = paste("Histogram of",price,"ticket prices from",fromLocation,"in class",class))
+  
+  # Display table
+    routeinfo %>% filter(`origine`==fromLocation) %>% 
+    filter(`classe`==class)
+  
+```
+
+### Lost items
+
+This tab shows the various lost items in stations and in trains. The panels is composed of 3 tabs, a tab showing a bar chart of the number of items lost per category, a pie chart showing the percentage of each category of lost items, and final a table showing the details of the lost items>
+
+On the left of the tab, we can choose which lost items to show.
+
+Note this tab, for performance reason only shows 100 lost items.
+
+Example of data shown for lost items :
+
+```{r Show lost items, echo=FALSE, message=FALSE, warning=FALSE}
+  ggplot(data = lost_found
+    , aes(x=factor(1), fill=gc_obo_type_c))+
+    geom_bar(width = 1)+
+    coord_polar("y")+
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank()) +
+    guides(fill=guide_legend(title="Lost items"))
+
+  ggplot(data = lost_found) +
+    geom_bar(mapping = aes(x = gc_obo_type_c, fill = gc_obo_type_c)) + 
+    coord_flip() +
+    theme(axis.title.y=element_blank(),
+          legend.position = "none")
+
+```
